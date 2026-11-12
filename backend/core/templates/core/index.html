@@ -1,0 +1,10 @@
+{% load static %}<!doctype html>
+<html lang="en" data-map-style="{{ map_style_url }}" data-map-vector="{{ map_vector_url }}">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#10251e"><meta name="description" content="ParkAR parking listings, reservations and indoor bay guidance.">
+  <link rel="manifest" href="{% static 'core/manifest.webmanifest' %}"><link rel="stylesheet" href="{% static 'core/styles.css' %}"><link rel="stylesheet" href="https://unpkg.com/maplibre-gl@6.16.0/dist/maplibre-gl.css">
+  <title>ParkAR — Parking, made simple</title>
+</head>
+<body><div id="appRoot"><div class="loading-screen">ParkAR is loading…</div></div><div id="modalRoot"></div><div id="toast" class="toast" role="status"></div>
+<script src="{% static 'core/app.js' %}?v=4" defer></script><script type="module" src="{% static 'core/maplibre.js' %}?v=4"></script></body></html>

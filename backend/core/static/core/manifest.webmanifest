@@ -1,0 +1,1 @@
+{"name":"ParkAR Parking","short_name":"ParkAR","start_url":"/","scope":"/","display":"standalone","background_color":"#f4f5f0","theme_color":"#10251e","description":"Parking listing, booking and indoor guidance.","icons":[{"src":"/static/core/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]}
