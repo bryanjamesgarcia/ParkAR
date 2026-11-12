@@ -1,7 +1,7 @@
 import * as maplibregl from 'https://unpkg.com/maplibre-gl@6.16.0/dist/maplibre-gl.mjs';
 
 const center=[121.0244,14.5547];
-let map=null,latest=null,parkMarkers=[];
+let map=null,latest=null,parkMarkers=[],userMarker=null;
 
 function popup(listing){
   const wrapper=document.createElement('div');wrapper.className='map-popup';
@@ -55,6 +55,8 @@ function updateData(data){
   if(current.isStyleLoaded())setRoute(route);else current.once('idle',()=>setRoute(route));
   if(positioned.length){if(positioned.length===1)current.flyTo({center:[Number(positioned[0].longitude),Number(positioned[0].latitude)],zoom:16,pitch:55});else{const bounds=positioned.reduce((b,l)=>b.extend([Number(l.longitude),Number(l.latitude)]),new maplibregl.LngLatBounds([Number(positioned[0].longitude),Number(positioned[0].latitude)],[Number(positioned[0].longitude),Number(positioned[0].latitude)]));current.fitBounds(bounds,{padding:60,maxZoom:16,duration:600,pitch:45})}}
   setTimeout(()=>current.resize(),60);
+  setTimeout(()=>current.resize(),300);
+  setTimeout(()=>current.resize(),800);
 }
 
 function setRoute(geometry){
@@ -65,3 +67,17 @@ function setRoute(geometry){
 
 window.addEventListener('parkar:map-data',event=>updateData(event.detail));
 window.addEventListener('parkar:reserve',event=>window.dispatchEvent(new CustomEvent('parkar:open-booking',{detail:event.detail})));
+window.addEventListener('parkar:user-location',event=>{
+  const {latitude,longitude}=event.detail||{};
+  if(!latitude||!longitude)return;
+  const current=createMap();if(!current)return;
+  if(userMarker)userMarker.remove();
+  const el=document.createElement('div');
+  el.style.width='16px';el.style.height='16px';el.style.borderRadius='50%';
+  el.style.background='#3b82f6';el.style.border='3px solid white';
+  el.style.boxShadow='0 0 10px #3b82f6';
+  userMarker=new maplibregl.Marker({element:el}).setLngLat([Number(longitude),Number(latitude)]).addTo(current);
+  current.flyTo({center:[Number(longitude),Number(latitude)],zoom:15,pitch:45});
+});
+window.__maplibreReady=true;
+window.dispatchEvent(new Event('parkar:maplibre-ready'));
